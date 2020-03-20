@@ -1,0 +1,65 @@
+<div #editForm >
+
+    <form (ngSubmit)="save()" [formGroup]="userForm" novalidate>
+
+        <h2>{{ user?.name | uppercase }}</h2>
+
+        <label *ngIf="user">
+            ID: {{ user.id }}
+        </label>
+
+        <label>
+            Name:
+            <input type="text" formControlName="name" placeholder="First name, Last name">
+        </label>
+
+        <label>
+            Email:
+            <input type="text" formControlName="email">
+        </label>
+
+        <label>
+            Data:
+
+            <mat-form-field class="chip-list">
+
+                <mat-chip-list #chipList aria-label="Data selection">
+
+                    <div *ngIf="user">
+
+                        <mat-chip *ngFor="let data of user.data" [selectable]="selectable" [removable]="admin"
+                            (removed)="removeData(data)">
+                            {{data}}
+                            <mat-icon matChipRemove *ngIf="admin">cancel</mat-icon>
+                        </mat-chip>
+
+                    </div>
+
+                    <input *ngIf="admin" [matChipInputFor]="chipList"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                        (matChipInputTokenEnd)="addData($event)">
+
+                </mat-chip-list>
+
+            </mat-form-field>
+
+        </label>
+
+        <div *ngIf="admin">
+
+            <label>
+                <mat-slide-toggle color="primary" formControlName="admin">
+                    Admin
+                </mat-slide-toggle>
+            </label>
+
+        </div>
+
+        <div style="display: flex; justify-content: space-between;">
+            <button mat-flat-button color="primary" type="button" (click)="cancel()">Cancel</button>
+            <button mat-flat-button color="warn" *ngIf="admin" type="submit" [disabled]="userForm.invalid">Save</button>
+        </div>
+
+    </form>
+
+</div>

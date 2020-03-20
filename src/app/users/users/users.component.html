@@ -1,0 +1,62 @@
+<!-- <p>users works!</p>
+
+<button mat-button>click</button>
+
+<ul>
+    <li *ngFor="let user of users">
+        {{user.id}} {{user.name}} {{user.email}} {{user.admin}}
+    </li>
+</ul> -->
+
+<table #expand mat-table [dataSource]="users" multiTemplateDataRows class="mat-elevation-z8">
+    <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+        <th mat-header-cell class="header-cell" *matHeaderCellDef> {{column}} </th>
+        <td mat-cell *matCellDef="let element"> {{element[column | lowercase]}} </td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let user" [attr.colspan]="columnsToDisplay.length">
+            <div class="user-detail" [@detailExpand]="user == expandedUser ? 'expanded' : 'collapsed'"
+                style="display: flex; align-items: center; justify-content: space-between;">
+
+                <div style="display: flex; align-items: center; padding: 5px; padding-left: 0px;">
+
+                    <div>
+                        <div><b>Email:</b> {{user.email}}</div>
+                        <div *ngIf="user.admin===true" class="admin" [class.true-admin]="user.admin===true">
+                            Admin rights: {{user.admin}}
+                        </div>
+                    </div>
+
+                    <div style="margin-left: 20px; display: flex; align-items: center;">
+                        <div style="display: flex; align-items: center; margin-right: 10px;">
+                            <div>Data: </div>
+                        </div>
+                        <mat-chip-list aria-label="Data">
+                            <mat-chip *ngFor="let data of user.data">{{data}}</mat-chip>
+                        </mat-chip-list>
+                    </div>
+
+
+                </div>
+
+                <div style="display: inline">
+                    <button mat-raised-button routerLink="{{user.id}}">Edit 1</button>
+                    <button mat-raised-button (click)="setUser(user)">Edit 2</button>
+                    <button mat-raised-button (click)="openDialog(user)">Edit 3</button>
+                </div>
+
+
+            </div>
+        </td>
+
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let user; columns: columnsToDisplay;" class="user-row"
+        [class.expanded-row]="expandedUser === user"
+        (click)="expandedUser = expandedUser === user ? null : user; setUser(null)">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+</table>

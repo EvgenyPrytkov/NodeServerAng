@@ -1,0 +1,27 @@
+div {
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    text-align: center;
+    color: whitesmoke;
+}
+
+button {
+    margin-left: 5px;
+    margin-right: 5px;
+    color: whitesmoke;
+    /* background-color: #424242; */
+    background-color: #555;
+}
+
+button:hover {
+    background-color: #777;
+    color: #222;
+}
+
+button.warn:hover {
+    color: darkred;
+    background-color: #FF685C;
+}
